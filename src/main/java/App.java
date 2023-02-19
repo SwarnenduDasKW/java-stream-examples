@@ -212,6 +212,25 @@ public class App {
                         , (o, n) -> o
                         , LinkedHashMap::new));
         System.out.println(mapBook);
+
+        System.out.println("-:-----------------------------------------------------------------------------:-");
+        System.out.println("Total price of all books.");
+        double totalPrice = books.stream().mapToDouble(Book::getPrice).sum();
+        System.out.println(totalPrice);
+
+        System.out.println("-:-----------------------------------------------------------------------------:-");
+        System.out.println("Stat by author.");
+        Map<String, DoubleSummaryStatistics> priceByAuthor = books.stream()
+                .collect(groupingBy(Book::getAuthor, summarizingDouble(Book::getPrice))
+        );
+        System.out.println(priceByAuthor);
+
+        System.out.println("-:-----------------------------------------------------------------------------:-");
+        System.out.println("Partition by price > 50.00");
+        List<Book> booksPartition = books.stream()
+                .collect(Collectors.partitioningBy(b -> b.getPrice() > 50.00))
+                .get(true);
+        System.out.println(booksPartition);
     }
 
 
